@@ -18,6 +18,12 @@ const translations = {
     errorExpired: "Your session has expired. Please refresh the page.",
     errorPermission: "You do not have permission to do this.",
     errorServer:  "Something went wrong. Please try again in a moment.",
+    loginTitle:   "Welcome back",
+    loginSub:     "Sign in to access the tool tracker",
+    loginUser:    "Client ID",
+    loginPass:    "Password",
+    loginBtn:     "Sign in",
+    logout: "Sign out",
   },
   de: {
     title:        "Milwaukee Werkzeug-Tracker",
@@ -38,6 +44,12 @@ const translations = {
     errorExpired: "Ihre Sitzung ist abgelaufen. Bitte laden Sie die Seite neu.",
     errorPermission: "Sie haben keine Berechtigung, dies zu tun.",
     errorServer:  "Etwas ist schiefgelaufen. Bitte versuchen Sie es gleich erneut.",
+    loginTitle:   "Willkommen zurück",
+    loginSub:     "Melden Sie sich an, um den Werkzeug-Tracker zu öffnen",
+    loginUser:    "Client-ID",
+    loginPass:    "Passwort",
+    loginBtn:     "Anmelden",
+    logout: "Abmelden",
   }
 };
 

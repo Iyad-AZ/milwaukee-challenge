@@ -216,3 +216,100 @@ tr.row-selected td { background: #fff5f5; }
   color: #888;
   font-size: 15px;
 }
+
+.login-box {
+  max-width: 400px;
+  margin: 4rem auto;
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.login-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1a1a1a;
+}
+.login-sub {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+.login-field {
+  margin-bottom: 1rem;
+}
+.login-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #444;
+}
+.login-field input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.login-field input:focus {
+  outline: none;
+  border-color: #CC1B2B;
+}
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.btn-secondary {
+  padding: 7px 14px;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.btn-secondary {
+  padding: 7px 14px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #1a1a1a;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.lang-btn {
+  padding: 5px 14px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #1a1a1a;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.logout-btn {
+  padding: 5px 14px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #666;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+  margin-left: 8px;
+}
+.logout-btn:hover {
+  border-color: #CC1B2B;
+  color: #CC1B2B;
+}

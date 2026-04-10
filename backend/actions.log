@@ -7,3 +7,47 @@
 2026-04-10 15:09:27,515 | INFO | Tool list fetched successfully
 2026-04-10 15:11:16,042 | INFO | Transferred tools ['T001', 'T002', 'T004', 'T005', 'T006', 'T008'] → FR Demo
 2026-04-10 15:11:16,057 | INFO | Tool list fetched successfully
+2026-04-10 18:43:05,323 | INFO | Successful login — client_id: demo-client
+2026-04-10 18:43:05,327 | INFO | Successful login — client_id: demo-client
+2026-04-10 18:43:05,373 | INFO | Tool list fetched successfully
+2026-04-10 18:43:16,518 | INFO | Successful login — client_id: demo-client
+2026-04-10 18:43:16,523 | INFO | Successful login — client_id: demo-client
+2026-04-10 18:43:16,531 | INFO | Tool list fetched successfully
+2026-04-10 19:45:07,325 | INFO | Successful login — client_id: demo-client
+2026-04-10 19:45:07,331 | INFO | Successful login — client_id: demo-client
+2026-04-10 19:45:07,388 | INFO | Tool list fetched successfully
+2026-04-10 19:53:37,371 | INFO | Successful login — client_id: demo-client
+2026-04-10 19:53:37,373 | INFO | Successful login — client_id: demo-client
+2026-04-10 19:53:37,394 | INFO | Tool list fetched successfully
+2026-04-10 19:53:41,000 | INFO | Successful login — client_id: demo-client
+2026-04-10 19:53:41,005 | INFO | Successful login — client_id: demo-client
+2026-04-10 19:53:41,011 | INFO | Tool list fetched successfully
+2026-04-10 20:51:29,982 | INFO | Successful login — client_id: demo-client
+2026-04-10 20:51:30,008 | INFO | Tool list fetched successfully
+2026-04-10 20:51:47,268 | INFO | Successful login — client_id: demo-client
+2026-04-10 20:51:47,289 | INFO | Tool list fetched successfully
+2026-04-10 20:52:40,709 | INFO | Successful login — client_id: demo-client
+2026-04-10 20:52:40,724 | INFO | Tool list fetched successfully
+2026-04-10 20:52:53,339 | INFO | Successful login — client_id: demo-client
+2026-04-10 20:52:53,348 | INFO | Tool list fetched successfully
+2026-04-10 20:54:21,589 | WARNING | Failed login — client_id: demo-
+2026-04-10 20:55:45,231 | WARNING | Failed login — client_id: rf
+2026-04-10 20:56:13,845 | INFO | Successful login — client_id: demo-client
+2026-04-10 20:56:13,868 | INFO | Tool list fetched successfully
+2026-04-10 20:59:22,540 | INFO | Successful login — client_id: demo-client
+2026-04-10 20:59:22,555 | INFO | Tool list fetched successfully
+2026-04-10 21:01:39,107 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:01:39,137 | INFO | Tool list fetched successfully
+2026-04-10 21:08:10,901 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:08:10,932 | INFO | Tool list fetched successfully
+2026-04-10 21:10:39,510 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:10:39,540 | INFO | Tool list fetched successfully
+2026-04-10 21:12:36,523 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:12:36,542 | INFO | Tool list fetched successfully
+2026-04-10 21:12:40,148 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:12:40,161 | INFO | Tool list fetched successfully
+2026-04-10 21:12:58,540 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:12:58,555 | INFO | Tool list fetched successfully
+2026-04-10 21:14:22,901 | INFO | Successful login — client_id: demo-client
+2026-04-10 21:14:22,926 | INFO | Tool list fetched successfully
+2026-04-10 21:15:10,667 | WARNING | Failed login — client_id: iiaia

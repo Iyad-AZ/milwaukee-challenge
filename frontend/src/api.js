@@ -4,13 +4,17 @@ const BASE_URL = "http://127.0.0.1:8000";
 
 let accessToken = null;
 
-export async function login(lang = "en") {
-  const response = await axios.post(`${BASE_URL}/auth/token`, {
-    client_id:     "demo-client",
-    client_secret: "demo-secret",
-    lang:          lang,
-  });
-  accessToken = response.data.access_token;
+export async function login(lang = "en", clientId = "demo-client", clientSecret = "demo-secret") {
+  try {
+    const response = await axios.post(`${BASE_URL}/auth/token`, {
+      client_id:     clientId,
+      client_secret: clientSecret,
+      lang:          lang,
+    });
+    accessToken = response.data.access_token;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function fetchTools() {
