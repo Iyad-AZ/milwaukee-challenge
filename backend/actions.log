@@ -1,0 +1,9 @@
+2026-04-10 15:09:17,979 | INFO | Successful login — client_id: demo-client
+2026-04-10 15:09:17,983 | INFO | Successful login — client_id: demo-client
+2026-04-10 15:09:18,026 | INFO | Tool list fetched successfully
+2026-04-10 15:09:26,995 | INFO | Successful login — client_id: demo-client
+2026-04-10 15:09:27,014 | INFO | Successful login — client_id: demo-client
+2026-04-10 15:09:27,514 | INFO | Tool list fetched successfully
+2026-04-10 15:09:27,515 | INFO | Tool list fetched successfully
+2026-04-10 15:11:16,042 | INFO | Transferred tools ['T001', 'T002', 'T004', 'T005', 'T006', 'T008'] → FR Demo
+2026-04-10 15:11:16,057 | INFO | Tool list fetched successfully

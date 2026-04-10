@@ -1,0 +1,151 @@
+openapi: "3.0.3"
+
+info:
+  title: Milwaukee Tool Tracker API
+  version: "1.0.0"
+  description: >
+    Mock API for tracking Milwaukee tool samples across
+    the Warehouse and country Demo Accounts.
+
+paths:
+
+  /auth/token:
+    post:
+      summary: Get an access token
+      description: >
+        Send your client ID and secret to receive a token.
+        This token must be included in all other requests.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - client_id
+                - client_secret
+              properties:
+                client_id:
+                  type: string
+                  example: "demo-client"
+                client_secret:
+                  type: string
+                  example: "demo-secret"
+                lang:
+                  type: string
+                  example: "en"
+                  description: "Language for error messages: en or de"
+      responses:
+        "200":
+          description: Login successful — token returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  expires_in:
+                    type: integer
+                    example: 7200
+                    description: "Token lifetime in seconds (2 hours)"
+        "401":
+          description: Wrong client ID or secret
+
+  /tools:
+    get:
+      summary: Get all tools in the Warehouse
+      description: >
+        Returns the full list of tools and their current status.
+        Requires a valid Bearer token in the Authorization header.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: List of tools returned successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "T001"
+                    name:
+                      type: string
+                      example: "M18 FUEL Drill"
+                    status:
+                      type: string
+                      example: "available"
+                      description: "Either 'available' or 'in demo'"
+                    location:
+                      type: string
+                      example: "Warehouse"
+        "401":
+          description: Missing or invalid token
+
+  /transfer:
+    post:
+      summary: Transfer tools to a country Demo Account
+      description: >
+        Moves one or more selected tools from the Warehouse
+        to the Demo Account of a specific country.
+        Requires a valid Bearer token.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tool_ids
+                - target_country
+              properties:
+                tool_ids:
+                  type: array
+                  items:
+                    type: string
+                  example: ["T001", "T004"]
+                  description: "List of tool IDs to transfer"
+                target_country:
+                  type: string
+                  example: "DE"
+                  description: "Country code for the Demo Account"
+                lang:
+                  type: string
+                  example: "en"
+                  description: "Language for response messages: en or de"
+      responses:
+        "200":
+          description: Transfer completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Tools transferred successfully."
+                  transferred:
+                    type: array
+                    items:
+                      type: string
+                    example: ["T001", "T004"]
+        "401":
+          description: Missing or invalid token
+        "403":
+          description: No permission to perform this action
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: >
+        Pass the token received from /auth/token as:
+        Authorization: Bearer <your_token>
