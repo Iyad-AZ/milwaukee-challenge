@@ -24,6 +24,7 @@ const translations = {
     loginPass:    "Password",
     loginBtn:     "Sign in",
     logout: "Sign out",
+    searchPlaceholder: "Search tools...",
   },
   de: {
     title:        "Milwaukee Werkzeug-Tracker",
@@ -50,6 +51,7 @@ const translations = {
     loginPass:    "Passwort",
     loginBtn:     "Anmelden",
     logout: "Abmelden",
+    searchPlaceholder: "Werkzeuge suchen...",
   }
 };
 

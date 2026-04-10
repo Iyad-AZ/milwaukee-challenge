@@ -313,3 +313,16 @@ tr.row-selected td { background: #fff5f5; }
   border-color: #CC1B2B;
   color: #CC1B2B;
 }
+
+.search-input {
+  padding: 7px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px;
+  color: white;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #CC1B2B;
+}

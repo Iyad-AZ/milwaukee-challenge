@@ -19,7 +19,12 @@ export default function App() {
   const [username, setUsername] = useState("demo-client");
   const [password, setPassword] = useState("demo-secret");
   const [loginError, setLoginError] = useState(null);
+  const [search, setSearch] = useState("");
+  
   const T = translations[lang];
+  const filteredTools = tools.filter(tool =>
+  tool.name.toLowerCase().includes(search.toLowerCase())
+);
 
 useEffect(() => {
   if (loggedIn) {
@@ -202,6 +207,13 @@ return (
     )}
 
     <div className="toolbar">
+      <input
+        type="text"
+        className="search-input"
+        placeholder={T.searchPlaceholder}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
       <button className="btn-secondary" onClick={toggleAll}>
         {T.selectAll}
       </button>
@@ -236,7 +248,7 @@ return (
             </tr>
           </thead>
           <tbody>
-            {tools.map(tool => (
+            {filteredTools.map(tool => (
               <tr
                 key={tool.id}
                 className={selected.includes(tool.id) ? "row-selected" : ""}
