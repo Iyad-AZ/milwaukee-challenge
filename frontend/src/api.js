@@ -42,3 +42,12 @@ export async function transferTools(toolIds, targetCountry, lang = "en") {
   );
   return response.data;
 }
+
+export async function fetchHistory() {
+  const response = await axios.get(`${BASE_URL}/history`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+}

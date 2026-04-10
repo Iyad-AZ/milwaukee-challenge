@@ -61,3 +61,7 @@
 2026-04-11 00:09:27,735 | INFO | Tool list fetched from database
 2026-04-11 00:11:48,995 | INFO | Successful login — client_id: demo-client
 2026-04-11 00:11:49,017 | INFO | Tool list fetched from database
+2026-04-11 00:29:41,949 | INFO | Successful login — client_id: demo-client
+2026-04-11 00:29:41,993 | INFO | Tool list fetched from database
+2026-04-11 00:29:52,408 | INFO | Transferred ['T001', 'T002'] → NL Demo
+2026-04-11 00:29:52,418 | INFO | Tool list fetched from database

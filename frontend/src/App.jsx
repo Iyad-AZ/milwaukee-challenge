@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { login, fetchTools, transferTools } from "./api";
 import translations from "./translations";
 import "./App.css";
+import { login, fetchTools, transferTools, fetchHistory } from "./api";
 
 const COUNTRIES = ["DE", "FR", "IT", "ES", "UK", "PL", "NL", "BE"];
 
@@ -20,6 +20,7 @@ export default function App() {
   const [password, setPassword] = useState("demo-secret");
   const [loginError, setLoginError] = useState(null);
   const [search, setSearch] = useState("");
+  const [history, setHistory] = useState([]);
   
   const T = translations[lang];
   const filteredTools = tools.filter(tool =>
@@ -32,6 +33,8 @@ useEffect(() => {
       try {
         const data = await fetchTools();
         setTools(data);
+        const hist = await fetchHistory();
+        setHistory(hist);
       } catch (err) {
         showMessage(T.errorServer, "error");
       } finally {
@@ -90,6 +93,8 @@ async function handleLogin() {
       const updated = await fetchTools();
       setTools(updated);
       setSelected([]);
+      const hist = await fetchHistory();
+      setHistory(hist);
       showMessage(T.success, "success");
     } catch (err) {
       const status = err?.response?.status;
@@ -277,7 +282,31 @@ return (
         </table>
       </div>
     )}
-
+    <div className="history-section">
+      <h3 className="history-title">{T.historyTitle}</h3>
+      {history.length === 0 ? (
+        <p className="history-empty">{T.historyEmpty}</p>
+      ) : (
+        <table className="history-table">
+          <thead>
+            <tr>
+              <th>{T.historyTools}</th>
+              <th>{T.historyCountry}</th>
+              <th>{T.historyTime}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {history.map(h => (
+              <tr key={h.id}>
+                <td>{h.tool_ids}</td>
+                <td>{h.target_country}</td>
+                <td>{h.timestamp}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
   </div>
 );
 }

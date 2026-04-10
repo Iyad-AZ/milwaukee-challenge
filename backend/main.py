@@ -64,6 +64,7 @@ def get_db():
 def init_db():
     conn = get_db()
     cursor = conn.cursor()
+    
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS tools (
             id TEXT PRIMARY KEY,
@@ -72,6 +73,16 @@ def init_db():
             location TEXT NOT NULL
         )
     """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS transfer_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tool_ids TEXT NOT NULL,
+            target_country TEXT NOT NULL,
+            timestamp TEXT NOT NULL
+        )
+    """)
+    
     cursor.execute("SELECT COUNT(*) FROM tools")
     count = cursor.fetchone()[0]
     if count == 0:
@@ -169,6 +180,17 @@ def transfer_tools(req: TransferRequest, authorization: str = Header(None)):
         )
         if cursor.rowcount > 0:
             transferred.append(tool_id)
+    
+    if transferred:
+        cursor.execute(
+            "INSERT INTO transfer_history (tool_ids, target_country, timestamp) VALUES (?, ?, ?)",
+            (
+                ", ".join(transferred),
+                req.target_country,
+                datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+            )
+        )
+    
     conn.commit()
     conn.close()
     logging.info(f"Transferred {transferred} → {req.target_country} Demo")
@@ -176,3 +198,15 @@ def transfer_tools(req: TransferRequest, authorization: str = Header(None)):
         "message": get_message(req.lang, "transfer_ok"),
         "transferred": transferred
     }
+
+@app.get("/history")
+def get_history(authorization: str = Header(None)):
+    verify_token(authorization)
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM transfer_history ORDER BY id DESC LIMIT 10"
+    )
+    history = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return history

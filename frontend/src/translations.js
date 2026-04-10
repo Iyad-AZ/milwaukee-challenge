@@ -25,6 +25,11 @@ const translations = {
     loginBtn:     "Sign in",
     logout: "Sign out",
     searchPlaceholder: "Search tools...",
+    historyTitle: "Recent transfers",
+    historyEmpty: "No transfers yet.",
+    historyTools: "Tools",
+    historyCountry: "Country",
+    historyTime: "Time",
   },
   de: {
     title:        "Milwaukee Werkzeug-Tracker",
@@ -52,6 +57,11 @@ const translations = {
     loginBtn:     "Anmelden",
     logout: "Abmelden",
     searchPlaceholder: "Werkzeuge suchen...",
+    historyTitle: "Letzte Übertragungen",
+    historyEmpty: "Noch keine Übertragungen.",
+    historyTools: "Werkzeuge",
+    historyCountry: "Land",
+    historyTime: "Zeit",
   }
 };
 
