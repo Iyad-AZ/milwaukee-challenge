@@ -30,6 +30,11 @@ const translations = {
     historyTools: "Tools",
     historyCountry: "Country",
     historyTime: "Time",
+    confirmTitle:  "Are you sure?",
+    confirmText:   "You are about to transfer",
+    confirmText2:  "tools to",
+    confirmYes:    "Yes, transfer",
+    confirmNo:     "Cancel",
   },
   de: {
     title:        "Milwaukee Werkzeug-Tracker",
@@ -62,6 +67,11 @@ const translations = {
     historyTools: "Werkzeuge",
     historyCountry: "Land",
     historyTime: "Zeit",
+    confirmTitle:  "Sind Sie sicher?",
+    confirmText:   "Sie sind dabei,",
+    confirmText2:  "Werkzeuge zu übertragen nach",
+    confirmYes:    "Ja, übertragen",
+    confirmNo:     "Abbrechen",
   }
 };
 

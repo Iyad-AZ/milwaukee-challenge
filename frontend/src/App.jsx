@@ -21,6 +21,7 @@ export default function App() {
   const [loginError, setLoginError] = useState(null);
   const [search, setSearch] = useState("");
   const [history, setHistory] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
   
   const T = translations[lang];
   const filteredTools = tools.filter(tool =>
@@ -232,13 +233,45 @@ return (
       </div>
       <button
         className="btn-primary"
-        onClick={handleTransfer}
+        onClick={() => {
+          if (selected.length === 0) {
+            showMessage(T.noSelection, "error");
+            return;
+          }
+          setShowConfirm(true);
+        }}
         disabled={working}
       >
         {working ? "..." : T.transferBtn}
       </button>
     </div>
-
+        {showConfirm && (
+  <div className="confirm-overlay">
+    <div className="confirm-box">
+      <h3 className="confirm-title">{T.confirmTitle}</h3>
+      <p className="confirm-text">
+        {T.confirmText} <strong>{selected.length}</strong> {T.confirmText2} <strong>{country}</strong>.
+      </p>
+      <div className="confirm-buttons">
+        <button
+          className="btn-secondary"
+          onClick={() => setShowConfirm(false)}
+        >
+          {T.confirmNo}
+        </button>
+        <button
+          className="btn-primary"
+          onClick={() => {
+            setShowConfirm(false);
+            handleTransfer();
+          }}
+        >
+          {T.confirmYes}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     {loading ? (
       <p className="loading-text">{T.loading}</p>
     ) : (
