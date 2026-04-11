@@ -73,3 +73,6 @@
 2026-04-11 10:42:54,770 | INFO | Tool list fetched from database
 2026-04-11 10:43:37,103 | INFO | Successful login — client_id: demo-client
 2026-04-11 10:43:37,119 | INFO | Tool list fetched from database
+2026-04-11 10:59:28,186 | INFO | Successful login — client_id: demo-client
+2026-04-11 11:00:38,147 | INFO | Successful login — client_id: demo-client
+2026-04-11 11:00:38,178 | INFO | Tool list fetched from database
