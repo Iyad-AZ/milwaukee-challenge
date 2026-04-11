@@ -1,0 +1,12 @@
+$kind: http-request
+url: http://127.0.0.1:8000/auth/token
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "client_id": "demo-client",
+      "client_secret": "demo-secret",
+      "lang": "en"
+    }
+order: 1775910636442
