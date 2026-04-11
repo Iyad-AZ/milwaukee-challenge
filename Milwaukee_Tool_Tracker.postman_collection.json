@@ -1,0 +1,51 @@
+{
+  "info": {
+    "name": "Milwaukee Tool Tracker",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Get Token",
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/auth/token",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"client_id\": \"demo-client\", \"client_secret\": \"demo-secret\", \"lang\": \"en\"}"
+        }
+      }
+    },
+    {
+      "name": "2. Get Tools",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/tools",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+      }
+    },
+    {
+      "name": "3. Transfer Tools",
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/transfer",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Authorization", "value": "Bearer {{token}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"tool_ids\": [\"T001\", \"T002\"], \"target_country\": \"DE\", \"lang\": \"en\"}"
+        }
+      }
+    },
+    {
+      "name": "4. Get Transfer History",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/history",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+      }
+    }
+  ]
+}
