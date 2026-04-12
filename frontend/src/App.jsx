@@ -294,7 +294,8 @@ return (
   const demoIds = tools
     .filter(t => t.location !== "Warehouse")
     .map(t => t.id);
-  setSelected(demoIds);
+  const allSelected = demoIds.every(id => selected.includes(id));
+  setSelected(allSelected ? [] : demoIds);
 }}>
   {T.selectAllDemo}
 </button>
@@ -368,7 +369,7 @@ return (
     <div className="confirm-box">
       <h3 className="confirm-title">{T.confirmTitle}</h3>
       <p className="confirm-text">
-        {T.confirmReturnText} <strong>{selected.length}</strong> {T.confirmReturnText2}
+        {T.confirmText} <strong>{selected.length}</strong> {T.confirmText2} <strong>{country}</strong>.
       </p>
       <div className="confirm-buttons">
         <button

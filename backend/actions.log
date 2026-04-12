@@ -147,3 +147,48 @@
 2026-04-12 02:02:15,379 | INFO | Tool list fetched — role: demo, country: DE
 2026-04-12 02:02:25,202 | INFO | Returned ['T003', 'T001'] → Warehouse
 2026-04-12 02:02:25,209 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 12:33:46,160 | INFO | Successful login — client_id: demo-fr
+2026-04-12 12:33:46,201 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 12:33:53,923 | INFO | Successful login — client_id: demo-fr
+2026-04-12 12:33:53,955 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 12:34:06,555 | INFO | Successful login — client_id: demo-fr
+2026-04-12 12:34:06,570 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 12:34:18,348 | WARNING | Failed login — client_id: demo-client
+2026-04-12 12:34:30,597 | INFO | Successful login — client_id: warehouse-admin
+2026-04-12 12:34:30,620 | INFO | Tool list fetched — role: warehouse, country: None
+2026-04-12 12:36:04,707 | INFO | Successful login — client_id: demo-fr
+2026-04-12 12:36:04,748 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 12:43:54,225 | INFO | Successful login — client_id: demo-de
+2026-04-12 12:43:54,272 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 15:15:13,774 | INFO | Successful login — client_id: warehouse-admin
+2026-04-12 15:15:13,854 | INFO | Tool list fetched — role: warehouse, country: None
+2026-04-12 15:19:31,542 | INFO | Transferred ['T001', 'T002'] → DE Demo
+2026-04-12 15:19:31,549 | INFO | Tool list fetched — role: warehouse, country: None
+2026-04-12 15:20:11,244 | INFO | Returned ['T001', 'T002'] → Warehouse
+2026-04-12 15:20:11,258 | INFO | Tool list fetched — role: warehouse, country: None
+2026-04-12 15:22:19,140 | INFO | Successful login — client_id: demo-de
+2026-04-12 15:22:19,178 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 15:22:55,370 | INFO | Transferred ['T016'] → DE Demo
+2026-04-12 15:22:55,388 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 15:23:15,290 | INFO | Transferred ['T003'] → FR Demo
+2026-04-12 15:23:15,309 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 15:23:32,874 | INFO | Returned ['T016'] → Warehouse
+2026-04-12 15:23:32,905 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 15:24:11,727 | INFO | Transferred ['T005', 'T004'] → DE Demo
+2026-04-12 15:24:11,758 | INFO | Tool list fetched — role: demo, country: DE
+2026-04-12 15:25:05,823 | WARNING | Failed login — client_id: demo-de
+2026-04-12 15:28:58,436 | INFO | Successful login — client_id: demo-fr
+2026-04-12 15:28:58,504 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:29:30,215 | INFO | Transferred ['T002'] → FR Demo
+2026-04-12 15:29:30,250 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:29:44,705 | INFO | Transferred ['T002'] → DE Demo
+2026-04-12 15:29:44,760 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:30:17,471 | INFO | Returned ['T007'] → Warehouse
+2026-04-12 15:30:17,504 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:30:55,326 | INFO | Successful login — client_id: demo-fr
+2026-04-12 15:30:55,360 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:40:29,969 | WARNING | Failed login — client_id: demo-client
+2026-04-12 15:40:36,019 | INFO | Successful login — client_id: demo-fr
+2026-04-12 15:40:36,052 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:42:04,394 | INFO | Successful login — client_id: demo-fr
+2026-04-12 15:42:04,432 | INFO | Tool list fetched — role: demo, country: FR
