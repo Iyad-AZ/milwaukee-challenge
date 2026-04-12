@@ -192,3 +192,7 @@
 2026-04-12 15:40:36,052 | INFO | Tool list fetched — role: demo, country: FR
 2026-04-12 15:42:04,394 | INFO | Successful login — client_id: demo-fr
 2026-04-12 15:42:04,432 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 15:47:31,936 | INFO | Successful login — client_id: demo-fr
+2026-04-12 15:47:31,981 | INFO | Tool list fetched — role: demo, country: FR
+2026-04-12 16:01:31,621 | INFO | Successful login — client_id: demo-it
+2026-04-12 16:01:31,652 | INFO | Tool list fetched — role: demo, country: IT

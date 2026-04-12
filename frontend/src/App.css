@@ -424,3 +424,35 @@ tr.row-selected td { background: #fff5f5; }
 }
 .btn-return:hover:not(:disabled) { background: #444; }
 .btn-return:disabled { background: #ccc; cursor: not-allowed; }
+
+.login-hints {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 0.5px solid #eee;
+}
+.hint-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.hint-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.hint-table td {
+  padding: 4px 8px;
+  color: #666;
+  border-bottom: 0.5px solid #f0f0f0;
+  font-family: monospace;
+}
+.hint-table tr:last-child td {
+  border-bottom: none;
+}
+.hint-table td:last-child {
+  color: #999;
+  font-family: var(--font-sans);
+}

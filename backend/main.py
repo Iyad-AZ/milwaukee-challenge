@@ -43,6 +43,26 @@ ACCOUNTS = {
         "password": "france123",
         "role":     "demo",
         "country":  "FR"
+    },
+    "demo-it": {
+        "password": "italy123",
+        "role":     "demo",
+        "country":  "IT"
+    },
+    "demo-es": {
+        "password": "spain123",
+        "role":     "demo",
+        "country":  "ES"
+    },
+    "demo-uk": {
+        "password": "uk123",
+        "role":     "demo",
+        "country":  "UK"
+    },
+    "demo-pl": {
+        "password": "poland123",
+        "role":     "demo",
+        "country":  "PL"
     }
 }
 

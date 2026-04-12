@@ -46,6 +46,7 @@ const translations = {
     confirmReturnText: "You are about to return",
     confirmReturnText2: "tools to the Warehouse.",
     confirmReturnYes: "Yes, return to Warehouse",
+    loginHint: "Demo credentials:",
   },
   de: {
     title:        "Milwaukee Werkzeug-Tracker",
@@ -94,6 +95,7 @@ const translations = {
     confirmReturnText: "Sie sind dabei,",
     confirmReturnText2: "Werkzeuge ins Lager zurückzugeben.",
     confirmReturnYes: "Ja, ins Lager zurückgeben",
+    loginHint: "Demo-Zugangsdaten:",
   }
 };
 
