@@ -408,3 +408,19 @@ tr.row-selected td { background: #fff5f5; }
   gap: 10px;
   justify-content: flex-end;
 }
+
+.btn-return {
+  padding: 8px 20px;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s;
+  margin-left: auto;
+  display: block;
+}
+.btn-return:hover:not(:disabled) { background: #444; }
+.btn-return:disabled { background: #ccc; cursor: not-allowed; }

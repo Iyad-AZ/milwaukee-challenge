@@ -27,8 +27,24 @@ logging.basicConfig(
 )
 
 SECRET_KEY = "milwaukee-secret-key-2024"
-VALID_CLIENT_ID = "demo-client"
-VALID_CLIENT_SECRET = "demo-secret"
+
+ACCOUNTS = {
+    "warehouse-admin": {
+        "password": "warehouse123",
+        "role":     "warehouse",
+        "country":  None
+    },
+    "demo-de": {
+        "password": "germany123",
+        "role":     "demo",
+        "country":  "DE"
+    },
+    "demo-fr": {
+        "password": "france123",
+        "role":     "demo",
+        "country":  "FR"
+    }
+}
 
 MESSAGES = {
     "en": {
@@ -140,7 +156,8 @@ def verify_token(authorization: str):
         raise HTTPException(status_code=401, detail=get_message("en", "expired"))
     token = authorization.split(" ")[1]
     try:
-        jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail=get_message("en", "expired"))
     except Exception:
@@ -152,44 +169,62 @@ def verify_token(authorization: str):
 
 @app.post("/auth/token")
 def get_token(req: TokenRequest):
-    if req.client_id != VALID_CLIENT_ID or req.client_secret != VALID_CLIENT_SECRET:
+    account = ACCOUNTS.get(req.client_id)
+    if not account or account["password"] != req.client_secret:
         logging.warning(f"Failed login — client_id: {req.client_id}")
         raise HTTPException(status_code=401, detail=get_message(req.lang, "wrong_login"))
     token = jwt.encode(
         {
-            "sub": req.client_id,
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+            "sub":     req.client_id,
+            "role":    account["role"],
+            "country": account["country"],
+            "exp":     datetime.datetime.utcnow() + datetime.timedelta(hours=2)
         },
         SECRET_KEY,
         algorithm="HS256"
     )
     logging.info(f"Successful login — client_id: {req.client_id}")
-    return {"access_token": token, "expires_in": 7200}
+    return {
+        "access_token": token,
+        "expires_in":   7200,
+        "role":         account["role"],
+        "country":      account["country"]
+    }
 
 
 @app.get("/tools")
 def get_tools(authorization: str = Header(None)):
-    verify_token(authorization)
+    payload = verify_token(authorization)
+    role = payload.get("role")
+    country = payload.get("country")
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM tools")
+    if role == "warehouse":
+        cursor.execute("SELECT * FROM tools")
+    else:
+        cursor.execute(
+            "SELECT * FROM tools WHERE location = 'Warehouse' OR location = ?",
+            (f"{country} Demo",)
+        )
     tools = [dict(row) for row in cursor.fetchall()]
     conn.close()
-    logging.info("Tool list fetched from database")
+    logging.info(f"Tool list fetched — role: {role}, country: {country}")
     return tools
 
 
 @app.post("/transfer")
 def transfer_tools(req: TransferRequest, authorization: str = Header(None)):
-    verify_token(authorization)
+    payload = verify_token(authorization)
+    role = payload.get("role")
+    country = payload.get("country")
     conn = get_db()
     cursor = conn.cursor()
     transferred = []
     for tool_id in req.tool_ids:
         cursor.execute(
-            "UPDATE tools SET status = 'in demo', location = ? WHERE id = ? AND status = 'available'",
-            (f"{req.target_country} Demo", tool_id)
-        )
+                "UPDATE tools SET status = 'in demo', location = ? WHERE id = ?",
+                (f"{req.target_country} Demo", tool_id)
+            )
         if cursor.rowcount > 0:
             transferred.append(tool_id)
     
@@ -219,6 +254,50 @@ def get_history(authorization: str = Header(None)):
     cursor.execute(
         "SELECT * FROM transfer_history ORDER BY id DESC LIMIT 10"
     )
-    history = [dict(row) for row in cursor.fetchall()]
+    rows = [dict(row) for row in cursor.fetchall()]
+    for row in rows:
+        tool_ids = [t.strip() for t in row["tool_ids"].split(",")]
+        names = []
+        for tool_id in tool_ids:
+            cursor.execute("SELECT name FROM tools WHERE id = ?", (tool_id,))
+            result = cursor.fetchone()
+            if result:
+                names.append(result["name"])
+        row["tool_names"] = ", ".join(names)
     conn.close()
-    return history
+    return rows
+
+class ReturnRequest(BaseModel):
+    tool_ids: List[str]
+    lang: Optional[str] = "en"
+
+@app.post("/return")
+def return_tools(req: ReturnRequest, authorization: str = Header(None)):
+    payload = verify_token(authorization)
+    role = payload.get("role")
+    country = payload.get("country")
+    conn = get_db()
+    cursor = conn.cursor()
+    returned = []
+    for tool_id in req.tool_ids:
+        if role == "warehouse":
+            cursor.execute(
+                "UPDATE tools SET status = 'available', location = 'Warehouse' WHERE id = ?",
+                (tool_id,)
+            )
+        else:
+            cursor.execute(
+                "UPDATE tools SET status = 'available', location = 'Warehouse' WHERE id = ? AND location = ?",
+                (tool_id, f"{country} Demo")
+            )
+        if cursor.rowcount > 0:
+            returned.append(tool_id)
+    if returned:
+        cursor.execute(
+            "INSERT INTO transfer_history (tool_ids, target_country, timestamp) VALUES (?, ?, ?)",
+            (", ".join(returned), "Warehouse", datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+        )
+    conn.commit()
+    conn.close()
+    logging.info(f"Returned {returned} → Warehouse")
+    return {"message": get_message(req.lang, "transfer_ok"), "returned": returned}

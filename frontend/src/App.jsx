@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { login, fetchTools, transferTools, fetchHistory, returnTools, getUserRole, getUserCountry } from "./api";
 import translations from "./translations";
 import "./App.css";
-import { login, fetchTools, transferTools, fetchHistory } from "./api";
+
 
 const COUNTRIES = ["DE", "FR", "IT", "ES", "UK", "PL", "NL", "BE"];
 
@@ -22,6 +23,9 @@ export default function App() {
   const [search, setSearch] = useState("");
   const [history, setHistory] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [userRole, setUserRole]       = useState(null);
+  const [userCountry, setUserCountry] = useState(null);
+  const [showReturnConfirm, setShowReturnConfirm] = useState(false);
   
   const T = translations[lang];
   const filteredTools = tools.filter(tool =>
@@ -49,15 +53,15 @@ useEffect(() => {
 async function handleLogin() {
   try {
     await login(lang, username, password);
-    setLoggedIn(true);
+    setUserRole(getUserRole());
+    setUserCountry(getUserCountry());
     setLoginError(null);
+    setLoggedIn(true);
   } catch (err) {
+    console.log("Login error:", err);
     const status = err?.response?.status;
-    if (status === 401) {
-      setLoginError(T.errorLogin);
-    } else {
-      setLoginError(T.errorServer);
-    }
+    if (status === 401) setLoginError(T.errorLogin);
+    else setLoginError(T.errorServer);
   }
 }
 
@@ -68,12 +72,26 @@ async function handleLogin() {
   }
 
   function toggleTool(id) {
-    setSelected(prev =>
-      prev.includes(id)
-        ? prev.filter(x => x !== id)
-        : [...prev, id]
-    );
-  }
+  const tool = tools.find(t => t.id === id);
+  if (!tool) return;
+
+  setSelected(prev => {
+    if (prev.includes(id)) {
+      return prev.filter(x => x !== id);
+    }
+    if (prev.length === 0) {
+      return [...prev, id];
+    }
+    const firstSelectedTool = tools.find(t => t.id === prev[0]);
+    const firstLocation = firstSelectedTool?.location === "Warehouse" ? "Warehouse" : "demo";
+    const newLocation = tool.location === "Warehouse" ? "Warehouse" : "demo";
+    if (firstLocation !== newLocation) {
+      showMessage(T.errorMixedSelection, "error");
+      return prev;
+    }
+    return [...prev, id];
+  });
+}
 
   function toggleAll() {
     const availableIds = tools
@@ -84,28 +102,77 @@ async function handleLogin() {
   }
 
   async function handleTransfer() {
-    if (selected.length === 0) {
-      showMessage(T.noSelection, "error");
+  if (selected.length === 0) {
+    showMessage(T.noSelection, "error");
+    return;
+  }
+
+  if (userRole === "warehouse") {
+    const hasDemoTools = selected.some(id => {
+      const tool = tools.find(t => t.id === id);
+      return tool && tool.location !== "Warehouse";
+    });
+    if (hasDemoTools) {
+      showMessage("Warehouse admin can only transfer Warehouse tools. Use Return to Warehouse for demo tools.", "error");
       return;
     }
-    setWorking(true);
-    try {
-      await transferTools(selected, country, lang);
-      const updated = await fetchTools();
-      setTools(updated);
-      setSelected([]);
-      const hist = await fetchHistory();
-      setHistory(hist);
-      showMessage(T.success, "success");
-    } catch (err) {
-      const status = err?.response?.status;
-      if (status === 401) showMessage(T.errorExpired, "error");
-      else if (status === 403) showMessage(T.errorPermission, "error");
-      else showMessage(T.errorServer, "error");
-    } finally {
-      setWorking(false);
-    }
   }
+
+  setWorking(true);
+  try {
+    await transferTools(selected, country, lang);
+    const updated = await fetchTools();
+    setTools(updated);
+    setSelected([]);
+    showMessage(T.success, "success");
+    const hist = await fetchHistory();
+    setHistory(hist);
+  } catch (err) {
+    const status = err?.response?.status;
+    if (status === 401) showMessage(T.errorExpired, "error");
+    else if (status === 403) showMessage(T.errorPermission, "error");
+    else showMessage(T.errorServer, "error");
+  } finally {
+    setWorking(false);
+  }
+}
+
+async function handleReturn() {
+  const demoSelected = selected.filter(id => {
+    const tool = tools.find(t => t.id === id);
+    return tool && tool.location !== "Warehouse";
+  });
+
+  const warehouseSelected = selected.filter(id => {
+    const tool = tools.find(t => t.id === id);
+    return tool && tool.location === "Warehouse";
+  });
+
+  if (selected.length === 0) {
+    showMessage(T.noSelection, "error");
+    return;
+  }
+
+  if (warehouseSelected.length > 0 && demoSelected.length === 0) {
+    showMessage(T.errorWarehouseReturn, "error");
+    return;
+  }
+
+  setWorking(true);
+  try {
+    await returnTools(demoSelected, lang);
+    const updated = await fetchTools();
+    setTools(updated);
+    setSelected([]);
+    showMessage(T.success, "success");
+    const hist = await fetchHistory();
+    setHistory(hist);
+  } catch (err) {
+    showMessage(T.errorServer, "error");
+  } finally {
+    setWorking(false);
+  }
+}
 
   if (!loggedIn) {
   return (
@@ -213,44 +280,95 @@ return (
     )}
 
     <div className="toolbar">
-      <input
-        type="text"
-        className="search-input"
-        placeholder={T.searchPlaceholder}
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-      <button className="btn-secondary" onClick={toggleAll}>
-        {T.selectAll}
-      </button>
-      <div className="country-selector">
-        <label>{T.countryLabel}</label>
-        <select value={country} onChange={e => setCountry(e.target.value)}>
-          {COUNTRIES.map(c => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
-      </div>
-      <button
-        className="btn-primary"
-        onClick={() => {
-          if (selected.length === 0) {
-            showMessage(T.noSelection, "error");
-            return;
-          }
-          setShowConfirm(true);
-        }}
-        disabled={working}
-      >
-        {working ? "..." : T.transferBtn}
-      </button>
-    </div>
-        {showConfirm && (
+  <input
+    type="text"
+    className="search-input"
+    placeholder={T.searchPlaceholder}
+    value={search}
+    onChange={e => setSearch(e.target.value)}
+  />
+  <button className="btn-secondary" onClick={toggleAll}>
+    {T.selectAll}
+  </button>
+  <button className="btn-secondary" onClick={() => {
+  const demoIds = tools
+    .filter(t => t.location !== "Warehouse")
+    .map(t => t.id);
+  setSelected(demoIds);
+}}>
+  {T.selectAllDemo}
+</button>
+  <div className="country-selector">
+    <label>{T.countryLabel}</label>
+    <select value={country} onChange={e => setCountry(e.target.value)}>
+      {COUNTRIES.map(c => (
+        <option key={c} value={c}>{c}</option>
+      ))}
+    </select>
+  </div>
+  <button
+    className="btn-primary"
+    onClick={() => {
+      if (selected.length === 0) {
+        showMessage(T.noSelection, "error");
+        return;
+      }
+      setShowConfirm(true);
+    }}
+    disabled={working}
+  >
+    {working ? "..." : T.transferBtn}
+  </button>
+</div>
+
+<div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem" }}>
+  <button
+  className="btn-return"
+  onClick={() => {
+    if (selected.length === 0) {
+      showMessage(T.noSelection, "error");
+      return;
+    }
+    setShowReturnConfirm(true);
+  }}
+  disabled={working}
+>
+  {T.returnBtn}
+</button>
+</div>
+        {showReturnConfirm && (
   <div className="confirm-overlay">
     <div className="confirm-box">
       <h3 className="confirm-title">{T.confirmTitle}</h3>
       <p className="confirm-text">
-        {T.confirmText} <strong>{selected.length}</strong> {T.confirmText2} <strong>{country}</strong>.
+        You are about to return <strong>{selected.length}</strong> tools to the Warehouse.
+      </p>
+      <div className="confirm-buttons">
+        <button
+          className="btn-secondary"
+          onClick={() => setShowReturnConfirm(false)}
+        >
+          {T.confirmNo}
+        </button>
+        <button
+          className="btn-primary"
+          onClick={() => {
+            setShowReturnConfirm(false);
+            handleReturn();
+          }}
+        >
+          {T.confirmReturnYes}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+{showConfirm && (
+  <div className="confirm-overlay">
+    <div className="confirm-box">
+      <h3 className="confirm-title">{T.confirmTitle}</h3>
+      <p className="confirm-text">
+        {T.confirmReturnText} <strong>{selected.length}</strong> {T.confirmReturnText2}
       </p>
       <div className="confirm-buttons">
         <button
@@ -290,22 +408,22 @@ return (
               <tr
                 key={tool.id}
                 className={selected.includes(tool.id) ? "row-selected" : ""}
-                onClick={() => tool.status === "available" && toggleTool(tool.id)}
+                onClick={() => toggleTool(tool.id)}
                 style={{ cursor: tool.status === "available" ? "pointer" : "default" }}
               >
                 <td>
                   <input
                     type="checkbox"
                     checked={selected.includes(tool.id)}
-                    disabled={tool.status !== "available"}
+                    disabled={tool.location === "Warehouse" && tool.status !== "available"}
                     onChange={() => toggleTool(tool.id)}
                     onClick={e => e.stopPropagation()}
                   />
                 </td>
                 <td className="tool-name">{tool.name}</td>
                 <td>
-                  <span className={`badge ${tool.status === "available" ? "badge-available" : "badge-demo"}`}>
-                    {tool.status === "available" ? T.available : T.inDemo}
+                  <span className={`badge ${tool.location === "Warehouse" ? "badge-available" : "badge-demo"}`}>
+                    {tool.location === "Warehouse" ? T.available : T.inDemo}
                   </span>
                 </td>
                 <td className="tool-location">{tool.location}</td>
@@ -331,7 +449,7 @@ return (
           <tbody>
             {history.map(h => (
               <tr key={h.id}>
-                <td>{h.tool_ids}</td>
+                <td>{h.tool_names || h.tool_ids}</td>
                 <td>{h.target_country}</td>
                 <td>{h.timestamp}</td>
               </tr>
